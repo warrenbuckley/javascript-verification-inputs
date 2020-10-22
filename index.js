@@ -3,9 +3,22 @@ const inputs = form.querySelectorAll('.inputs input');
 
 function handleInput(e) {
   // check for data that was inputtted and if there is a next input, focus it
+  console.log(e);
+
   const input = e.target;
   if (input.nextElementSibling && input.value) {
     input.nextElementSibling.focus();
+
+    // 1. Now select the text inside the input field
+    input.nextElementSibling.select();
+  }
+
+  // 3. Backspace/deleting through the inputs
+  else if(e.inputType === 'deleteContentBackward'){
+    // An input has been deleted, so focus previous sibling
+    if(input.previousElementSibling){
+      input.previousElementSibling.focus();
+    }
   }
 }
 
@@ -16,6 +29,12 @@ function handlePaste(e) {
     console.log(input);
     input.value = paste[i] || '';
   });
+
+  // 2. auto submit form if total length of paste data == number of inputs
+  if(paste.length === inputs.length) {
+    alert('Submit the form');
+    form.submit();
+  }
 }
 
 inputs[0].addEventListener('paste', handlePaste);
